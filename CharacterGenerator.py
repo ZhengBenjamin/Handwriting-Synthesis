@@ -15,8 +15,8 @@ class CharGenModel(nn.Module):
     scaler_y = MinMaxScaler()
     
     # Flatten for scaling
-    x_flat = x.reshape(-1, 160)
-    y_flat = y.reshape(-1, 160)
+    x_flat = x.reshape(-1, 40)
+    y_flat = y.reshape(-1, 40)
     
     scaler_x.fit(x_flat)
     scaler_y.fit(y_flat)
@@ -37,13 +37,14 @@ class CharGenModel(nn.Module):
     self.y_test = torch.tensor(y_test, dtype=torch.float32).to(device)
     
     self.rnn = nn.LSTM(
-      input_size=160,
-      hidden_size=256,
+      input_size=40,
+      hidden_size=128,
       num_layers=1,
-      batch_first=True
+      batch_first=True,
+      dropout=0.2
     )
     
-    self.fc = nn.Linear(256, 160)
+    self.fc = nn.Linear(128, 40)
     
   def forward(self, x):
     rnn_out, _ = self.rnn(x)

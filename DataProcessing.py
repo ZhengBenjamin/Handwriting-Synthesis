@@ -46,9 +46,9 @@ class DataProcessing:
       with open(data, "r") as file:
         reader = csv.reader(file)
         for row in reader: # Each character
-          writer.writerow([0, 1] + [0] * 640)
+          writer.writerow([0, 1] + [0] * 160)
           for i in range(1, 4): # Each stroke to write character
-            writer.writerow([i, 1] + row[0:i * 160] + [0] * (640 - i * 160))
+            writer.writerow([i, 1] + row[0:i * 40] + [0] * (160 - i * 40))
     
     print("Training input data generated to {}".format(input_data))
     
@@ -59,21 +59,21 @@ class DataProcessing:
         reader = csv.reader(file)
         for row in reader:
           for i in range(4): 
-            writer.writerow(row[i * 160 : (i + 1) * 160])
+            writer.writerow(row[i * 40 : (i + 1) * 40])
             
     print("Training output data generated to {}".format(output_data))
     
   def gen_data_vectors(batch_size=10):
     vectors = pd.read_csv("training/vectors.csv", header=None)
       
-    input_vectors = np.empty(shape=(batch_size, 4, 160))
-    output_vectors = np.empty(shape=(batch_size, 4, 160))
+    input_vectors = np.zeros(shape=(batch_size, 4, 40))
+    output_vectors = np.empty(shape=(batch_size, 4, 40))
     
     for i in range(0, len(vectors), batch_size):
       for j in range(batch_size):
         for k in range(4):
-          for l in range(160):
-            output_vectors[j][k][l] = vectors.iloc[i + j][k * 160 + l]
-            input_vectors[j][k][l] = 0
+          for l in range(40):
+            output_vectors[j][k][l] = vectors.iloc[i + j][k * 40 + l + 1]
+        input_vectors[j][0][0] = vectors.iloc[i + j][0]
     
     return input_vectors, output_vectors

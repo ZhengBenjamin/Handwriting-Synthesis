@@ -18,22 +18,42 @@ class MakeVectors():
     os.makedirs(self.output_folder, exist_ok=True)
 
     self.data_vectors = []
+    self.vector_character = []
+    self.intervals = [(48, 57), (65, 90), (97, 122)] # ASCII values for numbers and letters
     
-    for i in range(num_vectors):  
-      self.make_vector(i)
+    for intervals in self.intervals:
+      for i in range(intervals[0], intervals[1] + 1):
+        for j in range(3): # 3 vectors per character
+          self.make_vector(i, j)
     
     self.save_vectors() 
       
-  def make_vector(self, i):
+  def make_vector(self, char, i):
     window = tk.Tk()
-    window.title("Make Vector")
+    window.title(f"Make Vector {chr(char)}, {i + 1}/3")
     vectors = []
+    print(f"Make Vector {chr(char)}, {i + 1}/3")
+    
+    # Get screen width and height
+    screen_width = window.winfo_screenwidth()
+    screen_height = window.winfo_screenheight()
+    
+    # Calculate position x, y to center the window
+    position_x = int(screen_width / 2 - 512 / 2)
+    position_y = int(screen_height / 2 - 512 / 2)
+    
+    window.geometry(f"512x512+{position_x}+{position_y}")
     
     canvas = tk.Canvas(window, width=256, height=256, bg="white") 
     canvas.pack()
     
     image = Image.new("1", (256, 256), 1)
     draw = ImageDraw.Draw(image)
+    # Draw grid lines
+    canvas.create_line(0, 85, 256, 85, fill="gray", dash=(2, 2))  # Horizontal line
+    canvas.create_line(0, 170, 256, 170, fill="gray", dash=(2, 2))  # Horizontal line
+    canvas.create_line(85, 0, 85, 256, fill="gray", dash=(2, 2))  # Vertical line
+    canvas.create_line(170, 0, 170, 256, fill="gray", dash=(2, 2))  # Vertical line
     
     self.last_x, self.last_y = None, None
     stroke_vector = []
@@ -116,8 +136,9 @@ class MakeVectors():
         compressed_vectors.append([0, 0])
       
       self.data_vectors.append(compressed_vectors)
+      self.vector_character.append(char)
       
-      DataProcessing.draw_vector(compressed_vectors, f"{self.output_folder}/vector_{i}.png")
+      DataProcessing.draw_vector(compressed_vectors, f"{self.output_folder}/{chr(char)}_{i}.png")
 
     save_button = ttk.Button(window, text="Save", command=save_image)
     save_button.pack()
@@ -126,17 +147,16 @@ class MakeVectors():
     
   def save_vectors(self):
     
-    print(len(self.data_vectors))
     with open(self.output_file, "w") as file:
       writer = csv.writer(file)
       
-      for character in self.data_vectors:
+      for i, character in enumerate(self.data_vectors):
         row = []
         for coordinate in character:
           row += coordinate
-        writer.writerow(row)
+        writer.writerow([self.vector_character[i]] + row)
 
 if __name__ == "__main__":
-  MakeVectors(10, 80)
+  MakeVectors(10, 20)
     
     

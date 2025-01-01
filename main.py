@@ -1,16 +1,20 @@
 import torch
+import time
 import numpy as np
 import csv
+import os
 
 from DataGen import MakeVectors
 from DataProcessing import DataProcessing
 from CharacterGenerator import CharGenModel
 
 def train(x, y, device):
-  epochs = 20000
+  epochs = 250000
   model = CharGenModel(x, y, device).to(device)
   optimizer = torch.optim.Adam(model.parameters(), lr=0.0001)
   loss_fn = torch.nn.MSELoss()
+  
+  start_time = time.time()  
   
   for epoch in range(epochs):
     
@@ -25,17 +29,20 @@ def train(x, y, device):
       test_loss = loss_fn(y_test_pred, model.y_test)
     
     if epoch % 1000 == 0:
-      print(f"Epoch {epoch}: Train loss {train_loss}, Test loss {test_loss}")
+      elapsed_time = time.time() - start_time
+      print(f"Epoch {epoch}: Train loss {train_loss}, Test loss {test_loss}, Epoch/Sec {epoch / elapsed_time}")
       
   torch.save(model.state_dict(), "model.pth")
   
 def generate_character(model, char, device):
   model.eval()
   
-  x = np.zeros(shape=(1, 4, 160))
+  x = np.zeros(shape=(1, 4, 40))
+  x[0][0][0] = ord(char)
   out = model.predict(x)
-  
-  DataProcessing.draw_vector(DataProcessing.convert_vectors_array(out), "test.png")
+
+  os.makedirs("results", exist_ok=True)  
+  DataProcessing.draw_vector(DataProcessing.convert_vectors_array(out), "results/test.png")
   
   for i in range(len(out)):
     for j in range(len(out[0])):
@@ -46,12 +53,11 @@ def generate_character(model, char, device):
 if __name__ == "__main__":
   # MakeVectors(10, 20)
   DataProcessing.gen_training_data("training/vectors.csv")
-  x, y = DataProcessing.gen_data_vectors()
-  print(y[0])
+  x, y = DataProcessing.gen_data_vectors(186)
   
   device = torch.device("cpu")
   train(x, y, device)
   
   model = CharGenModel(x, y, device).to(device)
   model.load_state_dict(torch.load("model.pth", weights_only=False))
-  generate_character(model, "A", device)
+  generate_character(model, "B", device)
