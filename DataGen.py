@@ -23,7 +23,7 @@ class MakeVectors():
     
     for intervals in self.intervals:
       for i in range(intervals[0], intervals[1] + 1):
-        for j in range(3): # 3 vectors per character
+        for j in range(5): # 3 vectors per character
           self.make_vector(i, j)
     
     self.save_vectors() 
@@ -65,8 +65,8 @@ class MakeVectors():
       canvas.create_oval(x1, y1, x2, y2, fill="black", width=7)
       draw.line([x1, y1, x2, y2], fill="black", width=10)
       
-      curr_x = int(event.x / 4) # Divide by 4 for 64x64 image
-      curr_y = int(event.y / 4)
+      curr_x = int(event.x)
+      curr_y = int(event.y)
       
       # Save vector details 
       if self.last_x == None:
@@ -80,7 +80,7 @@ class MakeVectors():
           self.last_y = curr_y
       
     def on_release(event):
-      stroke_vector.append([self.last_x, self.last_y, int(event.x / 4), int(event.y / 4)])
+      stroke_vector.append([self.last_x, self.last_y, int(event.x), int(event.y)])
       self.last_x, self.last_y = None, None
       vectors.append(stroke_vector.copy())
       stroke_vector.clear()
@@ -157,6 +157,6 @@ class MakeVectors():
         writer.writerow([self.vector_character[i]] + row)
 
 if __name__ == "__main__":
-  MakeVectors(10, 20)
+  MakeVectors(10, 160)
     
     

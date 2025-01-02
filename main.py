@@ -37,7 +37,7 @@ def train(x, y, device):
 def generate_character(model, char, device):
   model.eval()
   
-  x = np.zeros(shape=(1, 4, 40))
+  x = np.zeros(shape=(1, 4, 320))
   x[0][0][0] = ord(char)
   out = model.predict(x)
 
@@ -53,9 +53,9 @@ def generate_character(model, char, device):
 if __name__ == "__main__":
   # MakeVectors(10, 20)
   DataProcessing.gen_training_data("training/vectors.csv")
-  x, y = DataProcessing.gen_data_vectors(186)
+  x, y = DataProcessing.gen_data_vectors(308)
   
-  device = torch.device("cpu")
+  device = torch.device("mps")
   train(x, y, device)
   
   model = CharGenModel(x, y, device).to(device)
