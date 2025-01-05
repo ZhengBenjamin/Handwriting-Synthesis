@@ -19,20 +19,20 @@ class MakeVectors():
 
     self.data_vectors = []
     self.vector_character = []
-    self.intervals = [(48, 57), (65, 90), (97, 122)] # ASCII values for numbers and letters
+    self.intervals = [(48, 57), (97, 122)] # ASCII values for numbers and letters
     
     for intervals in self.intervals:
       for i in range(intervals[0], intervals[1] + 1):
-        for j in range(5): # 3 vectors per character
+        for j in range(10): # 10 vectors per character
           self.make_vector(i, j)
     
     self.save_vectors() 
       
   def make_vector(self, char, i):
     window = tk.Tk()
-    window.title(f"Make Vector {chr(char)}, {i + 1}/3")
+    window.title(f"Make Vector {chr(char)}, {i + 1}/5")
     vectors = []
-    print(f"Make Vector {chr(char)}, {i + 1}/3")
+    print(f"Make Vector {chr(char)}, {i + 1}/5")
     
     # Get screen width and height
     screen_width = window.winfo_screenwidth()
@@ -157,6 +157,6 @@ class MakeVectors():
         writer.writerow([self.vector_character[i]] + row)
 
 if __name__ == "__main__":
-  MakeVectors(10, 160)
+  MakeVectors(10, 35)
     
     

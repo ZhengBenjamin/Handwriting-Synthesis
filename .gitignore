@@ -2,6 +2,7 @@
 __pycache__/
 training/
 results/
+progress/
 .DS_Store
 *.py[cod]
 *$py.class
