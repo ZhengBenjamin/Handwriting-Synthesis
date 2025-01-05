@@ -4,10 +4,14 @@
 
 This project leverages a deep learning approach to generate handwritten characters or words from input strings. The model is trained on vectorized character representations and produces visually accurate images using a Long Short-Term Memory (LSTM) network combined with a fully connected layer. This system is ideal for tasks involving handwriting synthesis or character recognition enhancement.
 
-## Examples: 
-<div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+## Examples (Note models will get better with more training)
+<div>
   <img src="https://github.com/user-attachments/assets/2db5bc60-fcce-49e9-8668-da0f2c10c069" style="height: 80px;">
+</div>
+<div>
   <img src="https://github.com/user-attachments/assets/d46dd87f-92d8-4492-b2d3-e9ac9c18a0d8" style="height: 80px;">
+</div>
+<div>
   <img src="https://github.com/user-attachments/assets/7061f777-8c3e-44c9-8c78-eeb2fd3b0577" style="height: 80px;">
 </div>
 
@@ -16,7 +20,7 @@ Handwriting this was trained on for reference:
 
 Training Example:
 
-<img src="https://github.com/user-attachments/assets/e2a5ed3c-a9cc-4c5d-9227-fdd339d6f427" style="height: 50px;">
+<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/user-attachments/assets/e2a5ed3c-a9cc-4c5d-9227-fdd339d6f427" style="height: 50px;"></div>
 
 ## Implementation
 
