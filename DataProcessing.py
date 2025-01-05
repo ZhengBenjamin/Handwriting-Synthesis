@@ -19,6 +19,7 @@ class DataProcessing:
     return converted
   
   def draw_vector(vector, output_file):
+    """ Draws a vector to an image """
     image = Image.new("RGB", (256, 256), "white")
     draw = ImageDraw.Draw(image)
 
@@ -34,6 +35,7 @@ class DataProcessing:
     image.save(output_file)
   
   def gen_training_data(data): 
+    """ Deprecated: Generates training data from vectors """
     output_folder = "training"
     input_data = "training/training_vectors.csv"
     output_data = "training/training_output.csv"
@@ -64,6 +66,7 @@ class DataProcessing:
     print("Training output data generated to {}".format(output_data))
     
   def gen_data_vectors():
+    """ Updated generation of training matricies from vectors csv """
     vectors = pd.read_csv("training/vectors.csv", header=None)
     batch_size = len(vectors)
       
@@ -80,6 +83,7 @@ class DataProcessing:
     return input_vectors, output_vectors
   
   def gen_output_images(model, input: str):
+    """ Runs model using input string and generates an image """
     words = []
     input = input + " "
     
@@ -88,8 +92,8 @@ class DataProcessing:
       if ord(letter) >= 97 and ord(letter) <= 122:
         x = np.zeros(shape=(1, 4, 70))
         x[0][0][0] = ord(letter)
-        # for i in range(random.randint(1, 4)):
-        #   x[0][random.randint(0, 3)][random.randint(0, 69)] = random.randint(-1, 1)
+        for i in range(random.randint(1, 4)):
+          x[0][random.randint(0, 3)][random.randint(0, 69)] = random.randint(-1, 1)
         out = model.predict(x)
         letters.append(DataProcessing.convert_vectors_array(out))
       elif ord(letter) == 32:

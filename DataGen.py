@@ -10,7 +10,7 @@ from tkinter import ttk
 
 class MakeVectors():
   
-  def __init__(self, num_vectors, num_intermediates):
+  def __init__(self, num_intermediates):
     self.num_intermediates = num_intermediates 
     self.output_folder = "training"
     self.output_file = "training/vectors.csv"
@@ -19,7 +19,7 @@ class MakeVectors():
 
     self.data_vectors = []
     self.vector_character = []
-    self.intervals = [(48, 57), (97, 122)] # ASCII values for numbers and letters
+    self.intervals = [(97, 122)] # ASCII values for lowercase letters
     
     for intervals in self.intervals:
       for i in range(intervals[0], intervals[1] + 1):
@@ -29,6 +29,7 @@ class MakeVectors():
     self.save_vectors() 
       
   def make_vector(self, char, i):
+    """ Creates a vector for each character """
     window = tk.Tk()
     window.title(f"Make Vector {chr(char)}, {i + 1}/5")
     vectors = []
@@ -146,7 +147,7 @@ class MakeVectors():
     window.mainloop()
     
   def save_vectors(self):
-    
+    """ Save vectors to a CSV file """
     with open(self.output_file, "w") as file:
       writer = csv.writer(file)
       
@@ -155,8 +156,3 @@ class MakeVectors():
         for coordinate in character:
           row += coordinate
         writer.writerow([self.vector_character[i]] + row)
-
-if __name__ == "__main__":
-  MakeVectors(10, 35)
-    
-    

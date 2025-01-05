@@ -51,7 +51,6 @@ class CharGenModel(nn.Module):
     return self.fc(rnn_out)
   
   def predict(self, x):
-    
     with torch.no_grad():
       x = torch.tensor(x, dtype=torch.float32).to(self.device)
       y = self.forward(x)
