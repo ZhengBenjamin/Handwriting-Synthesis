@@ -6,13 +6,13 @@ This project leverages a deep learning approach to generate handwritten characte
 
 ## Examples (Note models will get better with more training)
 <div>
-  <img src="https://github.com/user-attachments/assets/2db5bc60-fcce-49e9-8668-da0f2c10c069" style="height: 80px;">
+  <img src="https://github.com/user-attachments/assets/a4ecc715-1d32-489f-94b8-0f253b0cc795" style="height: 80px;">
 </div>
 <div>
-  <img src="https://github.com/user-attachments/assets/d46dd87f-92d8-4492-b2d3-e9ac9c18a0d8" style="height: 80px;">
+  <img src="https://github.com/user-attachments/assets/9904479a-041e-439b-b9c8-1f999bc2bcae" style="height: 80px;">
 </div>
 <div>
-  <img src="https://github.com/user-attachments/assets/7061f777-8c3e-44c9-8c78-eeb2fd3b0577" style="height: 80px;">
+  <img src="https://github.com/user-attachments/assets/171264da-4866-422e-95b8-f89b7fd5286d" style="height: 80px;">
 </div>
 
 Handwriting this was trained on for reference: 
