@@ -1,4 +1,5 @@
 import numpy as np
+import random
 import torch
 import torch.nn as nn
 
@@ -40,8 +41,7 @@ class CharGenModel(nn.Module):
       input_size=70,
       hidden_size=512,
       num_layers=1,
-      batch_first=True,
-      dropout=0.2
+      batch_first=True
     )
     
     self.fc = nn.Linear(512, 70)

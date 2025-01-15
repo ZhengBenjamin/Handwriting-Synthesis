@@ -1,19 +1,21 @@
 import torch
 import numpy as np
+import random
 import os
 
 from DataGen import MakeVectors
 from DataProcessing import DataProcessing
 from CharacterGenerator import CharGenModel
+import time
 
 def train(x, y, device, continue_training=False):
   """ Trains the model using generated data, and periodically saves the model """
   epochs = 100000000
-  learning_rate = 0.0005
+  learning_rate = 0.0000003
   model = CharGenModel(x, y, device).to(device)
   optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)  # Starting learning rate
   loss_fn = torch.nn.MSELoss()
-  test_loss_check_frequency = 300
+  test_loss_check_frequency = 1000
   start_epoch = 0
   
   if continue_training:
@@ -21,6 +23,8 @@ def train(x, y, device, continue_training=False):
     model.load_state_dict(checkpoint["model_state_dict"])
     optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
     start_epoch = checkpoint["epoch"]
+  
+  start_time = time.time()
   
   for epoch in range(start_epoch, epochs):
     
@@ -35,7 +39,9 @@ def train(x, y, device, continue_training=False):
         y_test_pred = model.forward(model.x_test)
         test_loss = loss_fn(y_test_pred, model.y_test)
       
-      print(f"Epoch {epoch}: Train loss {train_loss:.4f}, Test loss {test_loss:.4f}, LR {learning_rate}")
+      elapsed_time = time.time() - start_time
+      epochs_per_sec = (epoch - start_epoch + 1) / elapsed_time
+      print(f"Epoch {epoch}: Train loss {train_loss:.4f}, Test loss {test_loss:.4f}, LR {learning_rate}, Epochs/sec {epochs_per_sec:.2f}")
         
     if epoch % 10000 == 0:
       torch.save({
@@ -49,7 +55,7 @@ def train(x, y, device, continue_training=False):
 def generate_character(model, char, epochs):
   """ Runs the model using input character and generates an image """
   
-  model.eval()
+  model.eval() 
   
   x = np.zeros(shape=(1, 4, 70))
   x[0][0][0] = ord(char)
@@ -62,22 +68,22 @@ def generate_character(model, char, epochs):
 """ Entry point for applicaiton """
 
 # Data generation:
-# MakeVectors(10, 35)
+MakeVectors(35)
 x, y = DataProcessing.gen_data_vectors()
 
 # Device selection: 
-device = torch.device("mps") # Change CPU/CUDA/MPS/ROCm depending on your hardware
+device = torch.device("cuda") # Change CPU/CUDA/MPS/ROCm depending on your hardware
 
 # Train model from scratch:
-# train(x, y, device) 
+train(x, y, device) 
 
 # Continue training from last checkpoint, (uncomment previous line):
 # train(x, y, device, continue_training=True)
 
 # Infrence: 
 model = CharGenModel(x, y, device).to(device)
-checkpoint = torch.load("pretrained.pth", weights_only=False) # Pretrained model only contains lowercase letters
+checkpoint = torch.load("model.pth", weights_only=False) # Pretrained model only contains lowercase letters
 model.load_state_dict(checkpoint["model_state_dict"])
 
 # Input characters/sentence: 
-DataProcessing.gen_output_images(model, "The quick brown fox jumps over the lazy dog")
+DataProcessing.gen_output_images(model, "the quick brown fox jumps over the lazy dog")

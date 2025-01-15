@@ -103,13 +103,13 @@ class DataProcessing:
     offset = 0
     for word in words:
       for letter in word:
-        start = min([coord[0] for coord in letter if coord[0] > 10])
+        start = min([coord[0] for coord in letter if coord[0] > 20])
         end = max([coord[0] for coord in letter if coord[0] < 240])
         
         for coord in letter:
           coord[0] += offset
         
-        offset += end - start + random.randint(-5, 10)
+        offset += max(end - start + random.randint(-5, 10), 30)
         
       offset += random.randint(50, 100)
       
@@ -133,6 +133,8 @@ class DataProcessing:
     for stroke in strokes:
       for j in range(len(stroke) - 1):
         if stroke == [0, 0]:
+          continue
+        if stroke[j][1] < 10:
           continue
         draw.line([stroke[j][0], stroke[j][1], stroke[j + 1][0], stroke[j + 1][1]], fill="black", width=4)
         

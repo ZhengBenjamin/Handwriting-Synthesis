@@ -33,7 +33,7 @@ class MakeVectors():
     window = tk.Tk()
     window.title(f"Make Vector {chr(char)}, {i + 1}/5")
     vectors = []
-    print(f"Make Vector {chr(char)}, {i + 1}/5")
+    print(f"Make Vector {chr(char)}, {i + 1}/10")
     
     # Get screen width and height
     screen_width = window.winfo_screenwidth()
