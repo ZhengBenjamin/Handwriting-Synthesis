@@ -1,26 +1,15 @@
 # Character Generator using Neural Networks
 
 ## Overview
-
-This project leverages a deep learning approach to generate handwritten characters or words from input strings. The model is trained on vectorized character representations and produces visually accurate images using a Long Short-Term Memory (LSTM) network combined with a fully connected layer. This system is ideal for tasks involving handwriting synthesis or character recognition enhancement.
-
-## Examples (Note models will get better with more training)
-<div>
-  <img src="https://github.com/user-attachments/assets/a4ecc715-1d32-489f-94b8-0f253b0cc795" style="height: 80px;">
-</div>
-<div>
-  <img src="https://github.com/user-attachments/assets/9904479a-041e-439b-b9c8-1f999bc2bcae" style="height: 80px;">
-</div>
-<div>
-  <img src="https://github.com/user-attachments/assets/171264da-4866-422e-95b8-f89b7fd5286d" style="height: 80px;">
-</div>
+![output0](https://github.com/user-attachments/assets/d985d885-9fec-4920-9ff9-b42545e54b4c)
+![output0](https://github.com/user-attachments/assets/fe7dd73e-6fe9-481b-8ef3-049ec813062e)
 
 Handwriting this was trained on for reference: 
-<img src="https://github.com/user-attachments/assets/39a7bc95-fb02-4894-8f36-5a7ab9c60495" style="height: 80px;">
+![originalhandwriting](https://github.com/user-attachments/assets/8813c301-fea7-4b41-a990-03ea09c6a5a2)
 
 Training Example:
 
-<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/user-attachments/assets/e2a5ed3c-a9cc-4c5d-9227-fdd339d6f427" style="height: 50px;"></div>
+<div><img src="https://github.com/user-attachments/assets/e2a5ed3c-a9cc-4c5d-9227-fdd339d6f427" style="height: 50px;"></div>
 
 ## Implementation
 
