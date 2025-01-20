@@ -11,12 +11,13 @@ import time
 def train(x, y, device, continue_training=False):
   """ Trains the model using generated data, and periodically saves the model """
   epochs = 100000000
-  learning_rate = 0.0000003
+  learning_rate = 0.000003
   model = CharGenModel(x, y, device).to(device)
-  optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)  # Starting learning rate
+  optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
   loss_fn = torch.nn.MSELoss()
-  test_loss_check_frequency = 1000
+  test_loss_check_frequency = 100
   start_epoch = 0
+  scaler = torch.amp.GradScaler('cuda')
   
   if continue_training:
     checkpoint = torch.load("model.pth", weights_only=False)
@@ -29,15 +30,20 @@ def train(x, y, device, continue_training=False):
   for epoch in range(start_epoch, epochs):
     
     optimizer.zero_grad()
-    y_pred = model.forward(model.x_train)
-    train_loss = loss_fn(y_pred, model.y_train)
-    train_loss.backward()
-    optimizer.step()
+    
+    with torch.amp.autocast('cuda'):
+      y_pred = model.forward(model.x_train)
+      train_loss = loss_fn(y_pred, model.y_train)
+    
+    scaler.scale(train_loss).backward()
+    scaler.step(optimizer)
+    scaler.update()
     
     if epoch % test_loss_check_frequency == 0:
       with torch.no_grad():
-        y_test_pred = model.forward(model.x_test)
-        test_loss = loss_fn(y_test_pred, model.y_test)
+        with torch.amp.autocast('cuda'):
+          y_test_pred = model.forward(model.x_test)
+          test_loss = loss_fn(y_test_pred, model.y_test)
       
       elapsed_time = time.time() - start_time
       epochs_per_sec = (epoch - start_epoch + 1) / elapsed_time
@@ -64,11 +70,26 @@ def generate_character(model, char, epochs):
   os.makedirs("progress", exist_ok=True)  
   DataProcessing.draw_vector(DataProcessing.convert_vectors_array(out), f"progress/{char}{epochs}.png")
 
+def generate_string(model, string):
+  """ Runs the model using input string and generates an image """
+  lines = []
+  line = []
+
+  for word in string.split():
+    if len(line) < 20:
+      line.append(word)
+    else:
+      lines.append(" ".join(line))
+      line = [word]
+
+  lines.append(" ".join(line))
+
+  DataProcessing.gen_output_images(model, string, 0)
 
 """ Entry point for applicaiton """
 
 # Data generation:
-MakeVectors(35)
+# MakeVectors(35)
 x, y = DataProcessing.gen_data_vectors()
 
 # Device selection: 
@@ -86,4 +107,5 @@ checkpoint = torch.load("model.pth", weights_only=False) # Pretrained model only
 model.load_state_dict(checkpoint["model_state_dict"])
 
 # Input characters/sentence: 
-DataProcessing.gen_output_images(model, "the quick brown fox jumps over the lazy dog")
+string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789" 
+generate_string(model, string)
