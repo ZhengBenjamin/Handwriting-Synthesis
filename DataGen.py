@@ -19,11 +19,11 @@ class MakeVectors():
 
     self.data_vectors = []
     self.vector_character = []
-    self.intervals = [(97, 122)] # ASCII values for lowercase letters
+    self.intervals = [(48, 57), (97, 122), (65, 90)] # ASCII values for all numbers, lowercase and uppercase letters
     
     for intervals in self.intervals:
       for i in range(intervals[0], intervals[1] + 1):
-        for j in range(10): # 10 vectors per character
+        for j in range(7): # 7 vectors per character
           self.make_vector(i, j)
     
     self.save_vectors() 
@@ -31,7 +31,7 @@ class MakeVectors():
   def make_vector(self, char, i):
     """ Creates a vector for each character """
     window = tk.Tk()
-    window.title(f"Make Vector {chr(char)}, {i + 1}/5")
+    window.title(f"Make Vector {chr(char)}, {i + 1}/7")
     vectors = []
     print(f"Make Vector {chr(char)}, {i + 1}/10")
     

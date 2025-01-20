@@ -40,8 +40,9 @@ class CharGenModel(nn.Module):
     self.rnn = nn.LSTM(
       input_size=70,
       hidden_size=512,
-      num_layers=1,
-      batch_first=True
+      num_layers=3,
+      batch_first=True,
+      dropout=0.005
     )
     
     self.fc = nn.Linear(512, 70)
@@ -51,12 +52,8 @@ class CharGenModel(nn.Module):
     return self.fc(rnn_out)
   
   def predict(self, x):
+    self.train()
     with torch.no_grad():
       x = torch.tensor(x, dtype=torch.float32).to(self.device)
       y = self.forward(x)
-      y = y.cpu().numpy()[0]
-      
-      noise = np.random.normal(loc=0.0, scale=0.2, size=y.shape)
-      randomized_output = y + noise
-      
-      return randomized_output
+      return y.cpu().numpy()[0]
