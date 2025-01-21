@@ -1,8 +1,8 @@
 # Character Generator using Neural Networks
 
 ## Overview
-![output0](https://github.com/user-attachments/assets/d985d885-9fec-4920-9ff9-b42545e54b4c)
-![output0](https://github.com/user-attachments/assets/fe7dd73e-6fe9-481b-8ef3-049ec813062e)
+![output0](https://github.com/user-attachments/assets/3738839b-6daa-49d2-9829-00bfd98b3595)
+
 
 Handwriting this was trained on for reference: 
 ![originalhandwriting](https://github.com/user-attachments/assets/8813c301-fea7-4b41-a990-03ea09c6a5a2)
