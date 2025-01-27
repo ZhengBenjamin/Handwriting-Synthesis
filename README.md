@@ -33,6 +33,11 @@ The `CharGenModel` consists of:
 - **LSTM Layer:** Captures sequential stroke dependencies with 512 hidden units.
 - **Fully Connected Layer:** Maps the LSTM outputs to a 70-dimensional vector for the next set of strokes.
 
+![ModelArch](https://github.com/user-attachments/assets/f49d8db4-9854-45d5-a32a-f75cd72dc1f8)
+
+During generation, the model takes an input vector of `[1, 4, 70]` corresponding to 4 strokes, with 70 features (35 coordinates) per stroke vector. For each stroke of our character, there is a stack of 3 LSTM layers that gives us the opportunity to introduce some dropout. This gives us the opportunity to introduce some variance in our output vectors. Lastly, a fully connected layer maps the outputs to a 70-dimensional vector. The output of this pass will then be passed along to the next pass for the generation of the next stroke. 
+
+
 ### 3. Training
 The model is trained using:
 - **Optimizer:** Adam with a learning rate of 0.0005.
