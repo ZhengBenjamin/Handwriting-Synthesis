@@ -61,4 +61,6 @@ The model is trained using:
 - Select device based on your hardware (CUDA for Nvidia, ROCm for AMD, MPS for Apple Silicon GPU etc)
 - Adjust training parameters in CharacterGeneration.py.
 - Train your model.
-- Once your model is trained, you can comment out the training lines and run generation using gen_output_images() 
+- Once your model is trained, you can comment out the training lines and run generation using gen_output_images()
+
+Edit 9/29/25: This overfits like crazy. No generalization 
